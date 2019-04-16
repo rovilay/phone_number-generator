@@ -1,3 +1,11 @@
 export const apiPrefix = '/api/v1';
+export const phoneNumberApiPrefix = '/phonenumbers';
 export const appWelcomeMsg = 'Welcome to phone_number generator app';
 export const nonExistingRouteMsg = 'route do not exist!';
+export const maxPhoneNumberQty = 10;
+export const phoneNumbersFilePath = 'src/Data/phoneNumbersData';
+export const genericErrorMessage = 'something went wrong';
+export const fileEncoding = 'utf8';
+export const minPhoneNumberLength = 100000000;
+export const maxPhoneNumberLength = 999999999;
+export const validSortOrder = ['ascending', 'descending'];
