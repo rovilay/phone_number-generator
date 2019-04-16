@@ -29,7 +29,7 @@ const verifyQuery = (req, res, next) => {
         }
 
         if (Object.keys(errors).length) {
-            const error = { errors, status: 401 };
+            const error = { errors, status: 400 };
             return next(error);
         }
 
