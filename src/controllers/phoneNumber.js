@@ -1,8 +1,12 @@
+import fs from 'fs';
+
 import {
     maxPhoneNumberQty, minPhoneNumberLength, maxPhoneNumberLength,
-    genericErrorMessage
+    genericErrorMessage, phoneNumbersFilePath, fileEncoding, notFoundMessage
 } from '../helpers/defaults';
 import { getRandomRangeNumber, writeToFile, sorter } from '../helpers/utils';
+
+const filePath = `${phoneNumbersFilePath}.txt`;
 
 class PhoneNumberController {
     static generateNumber(min, max) {
@@ -38,7 +42,7 @@ class PhoneNumberController {
         }
     }
 
-    static async getPhoneNumbers(req, res, next) {
+    static async generatePhoneNumbers(req, res, next) {
         try {
             const { qty, order } = req.query;
             const quantityToGenerate = qty || maxPhoneNumberQty;
@@ -49,10 +53,78 @@ class PhoneNumberController {
                 throw error;
             }
 
+            return res.status(201).json({
+                success: true,
+                message: 'Phone numbers generated sucessfully',
+                phoneNumbersList,
+                totalNumbersAvailable: quantityToGenerate
+            });
+        } catch (error) {
+            return next(error);
+        }
+    }
+
+    static async getPhoneNumbers(req, res, next) {
+        try {
+            const { qty, order } = req.query;
+            const phoneNumbers = fs.readFileSync(filePath, { encoding: fileEncoding });
+            let phoneNumbersList = phoneNumbers === '' ? [] : phoneNumbers.split(',');
+            const totalNumbersAvailable = phoneNumbersList.length;
+
+            if (!totalNumbersAvailable) {
+                const error = {
+                    status: 404,
+                    message: notFoundMessage
+                };
+
+                throw error;
+            }
+
+            if (qty) {
+                phoneNumbersList.splice(qty);
+            }
+
+            if (order) {
+                phoneNumbersList = sorter(phoneNumbersList, order);
+            }
+
             return res.status(200).json({
                 success: true,
                 message: 'Phone numbers retrieved sucessfully',
-                phoneNumbersList
+                phoneNumbersList,
+                totalNumbersAvailable
+            });
+        } catch (error) {
+            return next(error);
+        }
+    }
+
+    static async getMinMaxPhoneNumbers(req, res, next) {
+        try {
+            const phoneNumbers = fs.readFileSync(filePath, { encoding: fileEncoding });
+            const phoneNumbersList = phoneNumbers === '' ? [] : phoneNumbers.split(',');
+            const totalNumbersAvailable = phoneNumbersList.length;
+
+            if (!totalNumbersAvailable) {
+                const error = {
+                    status: 404,
+                    message: notFoundMessage
+                };
+
+                throw error;
+            }
+
+            const min = Math.min(...phoneNumbersList);
+            const max = Math.max(...phoneNumbersList);
+
+            return res.status(200).json({
+                success: true,
+                message: 'Min and Max Phone numbers retrieved sucessfully',
+                phoneNumbers: {
+                    min: `0${min}`,
+                    max: `0${max}`,
+                },
+                totalNumbersAvailable
             });
         } catch (error) {
             return next(error);

@@ -4,10 +4,16 @@ import PhoneNumberController from '../controllers/phoneNumber';
 import { phoneNumberApiPrefix } from '../helpers/defaults';
 import verifyQuery from '../middlewares/verifyQuery';
 
-const musicRoutes = express.Router();
+const phoneNumberRoutes = express.Router();
 
-musicRoutes.get(`${phoneNumberApiPrefix}/generate`, verifyQuery,
+phoneNumberRoutes.get(`${phoneNumberApiPrefix}`, verifyQuery,
     PhoneNumberController.getPhoneNumbers);
 
+phoneNumberRoutes.get(`${phoneNumberApiPrefix}/generate`, verifyQuery,
+    PhoneNumberController.generatePhoneNumbers);
 
-export default musicRoutes;
+phoneNumberRoutes.get(`${phoneNumberApiPrefix}/minmax`,
+    PhoneNumberController.getMinMaxPhoneNumbers);
+
+
+export default phoneNumberRoutes;
