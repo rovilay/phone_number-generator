@@ -6,19 +6,15 @@ export const getRandomRangeNumber = (min, max) => Math.floor(Math.random() * (ma
 export const writeToFile = async (content) => {
     const fileName = `${phoneNumbersFilePath}.txt`;
     await writeFile(fileName, content, fileEncoding, error => error);
-
-    // return error;
 };
 export const sorter = (arrayOfValues, order) => {
-    const compareFunction = (firstValue, secondValue) => {
-        let compared = secondValue < firstValue;
-        if (order === 'descending') {
-            compared = firstValue < secondValue;
-        }
+    let sortedArray;
 
-        return compared;
-    };
+    if (order === 'descending') {
+        sortedArray = [...arrayOfValues].sort().reverse();
+    } else {
+        sortedArray = [...arrayOfValues].sort();
+    }
 
-    const sortedArray = [...arrayOfValues].sort(compareFunction);
     return sortedArray;
 };

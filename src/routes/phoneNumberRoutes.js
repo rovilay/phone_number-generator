@@ -6,8 +6,14 @@ import verifyQuery from '../middlewares/verifyQuery';
 
 const phoneNumberRoutes = express.Router();
 
-phoneNumberRoutes.get(`${phoneNumberApiPrefix}/generate`, verifyQuery,
+phoneNumberRoutes.get(`${phoneNumberApiPrefix}`, verifyQuery,
     PhoneNumberController.getPhoneNumbers);
+
+phoneNumberRoutes.get(`${phoneNumberApiPrefix}/generate`, verifyQuery,
+    PhoneNumberController.generatePhoneNumbers);
+
+phoneNumberRoutes.get(`${phoneNumberApiPrefix}/minmax`,
+    PhoneNumberController.getMinMaxPhoneNumbers);
 
 
 export default phoneNumberRoutes;
