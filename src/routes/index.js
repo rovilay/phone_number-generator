@@ -1,5 +1,6 @@
 import { apiPrefix, appWelcomeMsg, nonExistingRouteMsg } from '../helpers/defaults';
 
+import phoneNumberRoutes from './phoneNumberRoutes';
 import errorHandler from '../middlewares/errorhandler';
 
 const routes = (app) => {
@@ -10,7 +11,7 @@ const routes = (app) => {
         });
     });
 
-    // app.use(apiPrefix, musicRoutes);
+    app.use(apiPrefix, phoneNumberRoutes);
 
     // add new routes before the errorHandler
     app.use(errorHandler);
